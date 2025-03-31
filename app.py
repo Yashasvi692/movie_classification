@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 model = joblib.load('movie_genre_model.pkl')
 vectorizer = joblib.load('tfidf_vectorizer.pkl')
-le = joblib.load('label_encoder.pkl')
+le = joblib.load('label_encoder.pkl')  # Updated file
 
 lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
@@ -42,8 +42,7 @@ def predict():
         cleaned_text = clean_text(description)
         text_vectorized = vectorizer.transform([cleaned_text])
         prediction_encoded = model.predict(text_vectorized)
-        # Strip spaces from prediction
-        cleaned_prediction = [pred.strip() for pred in prediction_encoded]
+        cleaned_prediction = [pred.strip() for pred in prediction_encoded]  # Still good to keep
         print(f"Raw prediction: {prediction_encoded}, Cleaned: {cleaned_prediction}")
         prediction = le.inverse_transform(cleaned_prediction)[0]
         probability = model.predict_proba(text_vectorized).max()
